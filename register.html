@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background: radial-gradient(circle, #1a1a2e, #000);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            width: 300px;
+            backdrop-filter: blur(10px);
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            background-color: #ff6b6b;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
+        }
+        button:hover {
+            background-color: #ff4757;
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 71, 87, 1);
+        }
+        .link {
+            margin-top: 10px;
+            color: #ff6b6b;
+            cursor: pointer;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create an Account</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <button onclick="registerUser()">Register</button>
+        <p class="link" onclick="goToLogin()">Already have an account? Login here</p>
+    </div>
+    
+    <script>
+        function registerUser() {
+            let username = document.getElementById("username").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+            
+            let user = { username, email, password };
+            localStorage.setItem(email, JSON.stringify(user));
+            
+            alert("Registration successful! Redirecting to login page.");
+            window.location.href = "login.html";
+        }
+        
+        function goToLogin() {
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>
