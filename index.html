@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Number System Calculator</title>
-    <link rel="icon" type="image/png" href="pngegg.png">
+    <link rel="icon" type="image/png" href="pngegg.png"> <!-- تأكد إن الصورة موجودة جنب الملف -->
 
     <style>
         body {
@@ -11,57 +13,58 @@
             text-align: center;
             margin: 0;
             background: radial-gradient(circle, #00ACC1, #192ca6);
-            
             color: white;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            
         }
+
         .container {
             background: rgba(255, 255, 255, 0.1);
-            padding: 16px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-            width: 45%;
-
-            border: dotted;
-            
+    padding: 16px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    width: 90%;  /* بدل 45% */
+    max-width: 500px;
+    border: dotted;
+    box-sizing: border-box;
         }
+
         input, select, button {
             padding: 10px;
             margin: 6px;
             border-radius: 5px;
             border: none;
-            
         }
-        select{
-            cursor: pointer;
 
+        select {
+            cursor: pointer;
         }
+
         button {
             background-color: #f60303;
             color: white;
             cursor: pointer;
             transition: 0.3s;
         }
+
         button:hover {
             background-color: #ffffff;
             transform: scale(1.1);
-            color :#ff4757 ;
+            color: #ff4757;
         }
+
         #resultBox, #convertResultBox {
             margin-top: 8px;
             font-size: 15px;
             font-weight: bold;
-            background: white;
+            background: #2196F3;
             color: black;
             padding: 12px;
-           
+            border-radius: 8px;
         }
 
-        /* تخصيص زر "About" */
         button.about {
             padding: 10px 15px;
             background-color: #3498db;
@@ -76,7 +79,6 @@
         button.about:hover {
             background-color: #2980b9;
             transform: scale(1.1);
-            transition: 0.3s;
         }
     </style>
 </head>
@@ -104,7 +106,6 @@
 
         <h3>Convert Number</h3>
         <input type="text" id="convertNum" placeholder="Enter number">
-        
         <select id="fromBase">
             <option value="2">Binary</option>
             <option value="8">Octal</option>
@@ -136,22 +137,47 @@
             let number1 = parseInt(num1, base);
             let number2 = parseInt(num2, base);
 
+            if (isNaN(number1) || isNaN(number2)) {
+                document.getElementById("result").innerText = "Please enter valid numbers.";
+                return;
+            }
+
             let result;
             switch (operation) {
-                case "add": result = number1 + number2; break;
-                case "subtract": result = number1 - number2; break;
-                case "multiply": result = number1 * number2; break;
-                case "divide": result = number2 !== 0 ? Math.floor(number1 / number2) : "Error"; break;
+                case "add":
+                    result = number1 + number2;
+                    break;
+                case "subtract":
+                    result = number1 - number2;
+                    break;
+                case "multiply":
+                    result = number1 * number2;
+                    break;
+                case "divide":
+                    if (number2 === 0) {
+                        document.getElementById("result").innerText = "Cannot divide by zero.";
+                        return;
+                    }
+                    result = Math.floor(number1 / number2);
+                    break;
             }
-            document.getElementById("result").innerText = isNaN(result) ? "Invalid Input" : result.toString(base).toUpperCase();
+
+            document.getElementById("result").innerText = result.toString(base).toUpperCase();
         }
 
         function convertNumber() {
             let convertNum = document.getElementById("convertNum").value.trim();
             let fromBase = parseInt(document.getElementById("fromBase").value);
             let toBase = parseInt(document.getElementById("toBase").value);
+
             let decimalValue = parseInt(convertNum, fromBase);
-            document.getElementById("convertResult").innerText = isNaN(decimalValue) ? "Invalid Input" : decimalValue.toString(toBase).toUpperCase();
+
+            if (isNaN(decimalValue)) {
+                document.getElementById("convertResult").innerText = "Invalid input number.";
+                return;
+            }
+
+            document.getElementById("convertResult").innerText = decimalValue.toString(toBase).toUpperCase();
         }
 
         function goToAbout() {
@@ -160,3 +186,4 @@
     </script>
 </body>
 </html>
+
