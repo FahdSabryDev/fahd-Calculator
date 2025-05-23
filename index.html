@@ -1,9 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
     <title>Number System Calculator</title>
+    <link rel="icon" type="image/png" href="C:\Users\EELU\Desktop\web_project\pngegg.png">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background: radial-gradient(circle, #00ACC1, #192ca6);
+            
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            width: 45%;
+
+            border: dotted;
+            
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 6px;
+            border-radius: 5px;
+            border: none;
+            
+        }
+        select{
+            cursor: pointer;
+
+        }
+        button {
+            background-color: #f60303;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #ffffff;
+            transform: scale(1.1);
+            color :#ff4757 ;
+        }
+        #resultBox, #convertResultBox {
+            margin-top: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            background: white;
+            color: black;
+            padding: 12px;
+           
+        }
+
+        /* تخصيص زر "About" */
+        button.about {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        button.about:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Number System Calculator</h2>
+        <input type="text" id="num1" placeholder="Enter first number">
+        <input type="text" id="num2" placeholder="Enter second number">
+        <br>
+        <select id="operation">
+            <option value="add">Addition</option>
+            <option value="subtract">Subtraction</option>
+            <option value="multiply">Multiplication</option>
+            <option value="divide">Division</option>
+        </select>
+        <select id="base">
+            <option value="2">Binary</option>
+            <option value="8">Octal</option>
+            <option value="10">Decimal</option>
+            <option value="16">Hexadecimal</option>
+        </select>
+        <br>
+        <button onclick="calculate()"> Calculate </button>
+        <div id="resultBox"><span id="result"></span></div>
+
+        <h3>Convert Number</h3>
+        <input type="text" id="convertNum" placeholder="Enter number">
+        
+        <select id="fromBase">
+            <option value="2">Binary</option>
+            <option value="8">Octal</option>
+            <option value="10">Decimal</option>
+            <option value="16">Hexadecimal</option>
+        </select>
+        <span>to</span>
+        <select id="toBase">
+            <option value="2">Binary</option>
+            <option value="8">Octal</option>
+            <option value="10">Decimal</option>
+            <option value="16">Hexadecimal</option>
+        </select>
+        <br>
+        <button onclick="convertNumber()"> Convert </button>
+        <div id="convertResultBox"><span id="convertResult"></span></div>
+
+        <br>
+        <button class="about" onclick="goToAbout()">About</button>
+    </div>
+
     <script>
         function calculate() {
             let num1 = document.getElementById("num1").value.trim();
@@ -11,190 +133,30 @@
             let operation = document.getElementById("operation").value;
             let base = parseInt(document.getElementById("base").value);
 
-            if (num1 === "" || num2 === "") {
-                alert("Please enter both numbers");
-                return;
-            }
-
             let number1 = parseInt(num1, base);
             let number2 = parseInt(num2, base);
 
-            if (isNaN(number1) || isNaN(number2)) {
-                alert("Invalid input for the selected base");
-                return;
-            }
-
             let result;
             switch (operation) {
-                case "add":
-                    result = number1 + number2;
-                    break;
-                case "subtract":
-                    result = number1 - number2;
-                    break;
-                case "multiply":
-                    result = number1 * number2;
-                    break;
-                case "divide":
-                    if (number2 === 0) {
-                        alert("Cannot divide by zero");
-                        return;
-                    }
-                    result = Math.floor(number1 / number2);
-                    break;
-                default:
-                    alert("Invalid operation");
-                    return;
+                case "add": result = number1 + number2; break;
+                case "subtract": result = number1 - number2; break;
+                case "multiply": result = number1 * number2; break;
+                case "divide": result = number2 !== 0 ? Math.floor(number1 / number2) : "Error"; break;
             }
-            document.getElementById("result").innerText = result.toString(base).toUpperCase();
+            document.getElementById("result").innerText = isNaN(result) ? "Invalid Input" : result.toString(base).toUpperCase();
         }
 
         function convertNumber() {
             let convertNum = document.getElementById("convertNum").value.trim();
             let fromBase = parseInt(document.getElementById("fromBase").value);
             let toBase = parseInt(document.getElementById("toBase").value);
-
-            if (convertNum === "") {
-                alert("Please enter a number to convert");
-                return;
-            }
-
             let decimalValue = parseInt(convertNum, fromBase);
-            if (isNaN(decimalValue)) {
-                alert("Invalid number for the selected base");
-                return;
-            }
+            document.getElementById("convertResult").innerText = isNaN(decimalValue) ? "Invalid Input" : decimalValue.toString(toBase).toUpperCase();
+        }
 
-            let convertedValue = decimalValue.toString(toBase).toUpperCase();
-            document.getElementById("convertResult").innerText = convertedValue;
+        function goToAbout() {
+            window.location.href = "about.html";
         }
     </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            background: radial-gradient(circle, #0d1b2a, #000);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-            width: 50%;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: none;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: none;
-            background-color: #f60303;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 16px;
-            width: 100%;
-            box-shadow: 0 0 15px rgba(232, 8, 8, 0.8);
-        }
-
-        button:hover {
-            background-color: #ff4757;
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 71, 87, 1);
-        }
-
-        #resultBox, #convertResultBox {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            background-color: #ffffff;
-            color: rgb(0, 0, 0);
-            padding: 15px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 90%;
-                padding: 15px;
-            }
-
-            .form-control, button {
-                width: 100%;
-            }
-
-            #resultBox, #convertResultBox {
-                font-size: 18px;
-                padding: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Number System Calculator</h2>
-        <input type="text" id="num1" class="form-control" placeholder="Enter first number">
-        <input type="text" id="num2" class="form-control" placeholder="Enter second number">
-        <select id="operation" class="form-control">
-            <option value="add">Addition</option>
-            <option value="subtract">Subtraction</option>
-            <option value="multiply">Multiplication</option>
-            <option value="divide">Division</option>
-        </select>
-        <select id="base" class="form-control">
-            <option value="2">Binary</option>
-            <option value="8">Octal</option>
-            <option value="10">Decimal</option>
-            <option value="16">Hexadecimal</option>
-        </select>
-        <button onclick="calculate()">✨ Calculate ✨</button>
-        <div id="resultBox"><span id="result"></span></div>
-
-        <br><br>
-        <h3>Convert Number Between Systems</h3>
-        <input type="text" id="convertNum" class="form-control" placeholder="Enter number">
-        <select id="fromBase" class="form-control">
-            <option value="2">Binary</option>
-            <option value="8">Octal</option>
-            <option value="10">Decimal</option>
-            <option value="16">Hexadecimal</option>
-        </select>
-        <span style="display:block; margin: 10px 0;"> to </span>
-        <select id="toBase" class="form-control">
-            <option value="2">Binary</option>
-            <option value="8">Octal</option>
-            <option value="10">Decimal</option>
-            <option value="16">Hexadecimal</option>
-        </select>
-        <button onclick="convertNumber()">🔄 Convert 🔄</button>
-        <div id="convertResultBox"><span id="convertResult"></span></div>
-    </div>
 </body>
 </html>
-
-
-
